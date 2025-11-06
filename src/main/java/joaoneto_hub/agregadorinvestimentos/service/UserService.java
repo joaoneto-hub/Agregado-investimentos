@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService {
+public class UserService  {
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {

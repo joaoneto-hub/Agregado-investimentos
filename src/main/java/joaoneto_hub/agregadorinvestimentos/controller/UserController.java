@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
-
-
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
