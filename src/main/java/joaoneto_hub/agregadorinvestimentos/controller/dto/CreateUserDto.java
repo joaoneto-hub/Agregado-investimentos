@@ -1,4 +1,4 @@
-package joaoneto_hub.agregadorinvestimentos.controller;
+package joaoneto_hub.agregadorinvestimentos.controller.dto;
 
 
 public record CreateUserDto(String username, String email, String password) {

@@ -1,5 +1,8 @@
 package joaoneto_hub.agregadorinvestimentos.controller;
 
+import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateAccountDto;
+import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateUserDto;
+import joaoneto_hub.agregadorinvestimentos.controller.dto.UpdateUserDto;
 import joaoneto_hub.agregadorinvestimentos.entity.User;
 import joaoneto_hub.agregadorinvestimentos.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +55,16 @@ public class UserController {
     public ResponseEntity<User> updateUserById(@PathVariable("userId") String userId, @RequestBody UpdateUserDto updateUserDto) {
             userService.updateUserById(userId, updateUserDto);
             return ResponseEntity.noContent().build();
-        } 
+        }
+
+    @PostMapping("/{userId}/accounts")
+    public ResponseEntity<User> updateUserById(@PathVariable("userId") String userId, @RequestBody CreateAccountDto createAccountDto) {
+       userService.createAccount(userId, createAccountDto);
+
+
+       return ResponseEntity.ok().build();
+    }
+
+
     
 }

@@ -1,12 +1,19 @@
 package joaoneto_hub.agregadorinvestimentos.service;
 
-import joaoneto_hub.agregadorinvestimentos.controller.CreateUserDto;
-import joaoneto_hub.agregadorinvestimentos.controller.UpdateUserDto;
+import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateAccountDto;
+import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateUserDto;
+import joaoneto_hub.agregadorinvestimentos.controller.dto.UpdateUserDto;
+import joaoneto_hub.agregadorinvestimentos.entity.Account;
+import joaoneto_hub.agregadorinvestimentos.entity.BillingAddress;
 import joaoneto_hub.agregadorinvestimentos.entity.User;
+import joaoneto_hub.agregadorinvestimentos.repository.AcconutRepository;
+import joaoneto_hub.agregadorinvestimentos.repository.BillingAddressRepository;
 import joaoneto_hub.agregadorinvestimentos.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.lang.module.ResolutionException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,9 +21,14 @@ import java.util.UUID;
 @Service
 public class UserService  {
     private final UserRepository userRepository;
+    private AcconutRepository acconutRepository;
+    private BillingAddressRepository billingAddressRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, AcconutRepository acconutRepository,
+            BillingAddressRepository billingAddressRepository) {
         this.userRepository = userRepository;
+        this.acconutRepository = acconutRepository;
+        this.billingAddressRepository = billingAddressRepository;
     }
 
     public UUID createUser(@RequestBody CreateUserDto createUserDto) {
@@ -63,5 +75,28 @@ public class UserService  {
         if (user.isPresent()) {
             userRepository.delete(user.get());
         }
+    }
+
+    public void createAccount(String userId, CreateAccountDto createAccountDto) {
+        var user = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResolutionException("User not found"));
+
+        var account = new Account(
+                null,
+                new ArrayList<>(),
+                createAccountDto.description(),
+                user,
+                null);
+
+        var accountCreated = acconutRepository.save(account);
+
+        var billingAddress = new BillingAddress(
+                null,
+                accountCreated,
+                createAccountDto.street(),
+                createAccountDto.number());
+
+        billingAddressRepository.save(billingAddress);
+
     }
 }

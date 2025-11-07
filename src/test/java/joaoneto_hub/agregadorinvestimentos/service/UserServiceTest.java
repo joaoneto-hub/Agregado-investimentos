@@ -1,6 +1,6 @@
 package joaoneto_hub.agregadorinvestimentos.service;
 
-import joaoneto_hub.agregadorinvestimentos.controller.CreateUserDto;
+import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateUserDto;
 import joaoneto_hub.agregadorinvestimentos.entity.User;
 import joaoneto_hub.agregadorinvestimentos.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;

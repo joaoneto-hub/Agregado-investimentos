@@ -14,7 +14,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID accountId;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
     @PrimaryKeyJoinColumn
     private BillingAddress billingAddress;
 
@@ -30,9 +30,14 @@ public class Account {
     private List<AccountStock> accountStocks;
 
     public Account() {}
-    public Account(String description, UUID accountId) {
-        this.description = description;
+
+    public Account(UUID accountId, List<AccountStock> accountStocks, String description, User user,
+            BillingAddress billingAddress) {
         this.accountId = accountId;
+        this.accountStocks = accountStocks;
+        this.description = description;
+        this.user = user;
+        this.billingAddress = billingAddress;
     }
 
     public String getDescription() {
@@ -57,6 +62,22 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public BillingAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public List<AccountStock> getAccountStocks() {
+        return accountStocks;
+    }
+
+    public void setAccountStocks(List<AccountStock> accountStocks) {
+        this.accountStocks = accountStocks;
     }
 }
 
