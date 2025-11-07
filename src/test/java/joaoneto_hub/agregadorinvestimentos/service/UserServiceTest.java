@@ -1,6 +1,7 @@
 package joaoneto_hub.agregadorinvestimentos.service;
 
 import joaoneto_hub.agregadorinvestimentos.controller.CreateUserDto;
+import joaoneto_hub.agregadorinvestimentos.entity.User;
 import joaoneto_hub.agregadorinvestimentos.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -10,8 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -26,14 +32,36 @@ class UserServiceTest {
         @DisplayName("Should create a user with success")
         void shouldCreateAUserWithSuccess() {
             //Arrange
-            doReturn(null).when(userRepository).save(any());
+            var user = new User(
+                    UUID.randomUUID(),
+                    "username",
+                    "email@email.com",
+                    "password",
+                    null,
+                    null
+            );
+            doReturn(user).when(userRepository).save(any());
             var input = new CreateUserDto(
                     "username",
                     "email",
                     "password");
             //Act
-            userService.createUser(input);
+           var output = userService.createUser(input);
             //Assert
+            assertNotNull(output);
+        }
+        @Test
+        @DisplayName("Should throw exception when error occurs")
+        void shouldThrowExceptionWhenErrorOccurs(){
+            //Arrange
+            doThrow(new RuntimeException()).when(userRepository).save(any());
+            var input = new CreateUserDto(
+                    "username",
+                    "email",
+                    "password");
+            //Act
+           assertThrows(RuntimeException.class, () -> userService.createUser(input));
+
         }
     }
 }
