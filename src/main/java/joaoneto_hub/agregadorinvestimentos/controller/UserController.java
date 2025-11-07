@@ -1,5 +1,6 @@
 package joaoneto_hub.agregadorinvestimentos.controller;
 
+import joaoneto_hub.agregadorinvestimentos.controller.dto.AccoutResponseDto;
 import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateAccountDto;
 import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateUserDto;
 import joaoneto_hub.agregadorinvestimentos.controller.dto.UpdateUserDto;
@@ -58,11 +59,17 @@ public class UserController {
         }
 
     @PostMapping("/{userId}/accounts")
-    public ResponseEntity<User> updateUserById(@PathVariable("userId") String userId, @RequestBody CreateAccountDto createAccountDto) {
-       userService.createAccount(userId, createAccountDto);
+    public ResponseEntity<User> updateUserById(@PathVariable("userId") String userId,
+            @RequestBody CreateAccountDto createAccountDto) {
+        userService.createAccount(userId, createAccountDto);
 
+        return ResponseEntity.ok().build();
+    }
 
-       return ResponseEntity.ok().build();
+    @GetMapping("/{userId}/accounts")
+    public ResponseEntity<List<AccoutResponseDto>> listAccounts(@PathVariable("userId") String userId) {
+        var account = userService.listAccounts(userId);
+        return ResponseEntity.ok(account);
     }
 
 

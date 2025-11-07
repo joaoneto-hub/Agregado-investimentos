@@ -1,5 +1,6 @@
 package joaoneto_hub.agregadorinvestimentos.service;
 
+import joaoneto_hub.agregadorinvestimentos.controller.dto.AccoutResponseDto;
 import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateAccountDto;
 import joaoneto_hub.agregadorinvestimentos.controller.dto.CreateUserDto;
 import joaoneto_hub.agregadorinvestimentos.controller.dto.UpdateUserDto;
@@ -98,5 +99,13 @@ public class UserService  {
 
         billingAddressRepository.save(billingAddress);
 
+    }
+
+    public List<AccoutResponseDto> listAccounts(String userId) {
+        var user = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResolutionException("User not found"));
+        return user.getAccounts().stream()
+                .map(ac -> new AccoutResponseDto(ac.getAccountId().toString(), ac.getDescription()))
+                .toList();
     }
 }
